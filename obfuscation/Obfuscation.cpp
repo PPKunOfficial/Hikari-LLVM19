@@ -7,8 +7,10 @@
   Ref : http://lists.llvm.org/pipermail/llvm-dev/2011-February/038109.html
 */
 #include "include/Obfuscation.h"
-#include "llvm/Support/CommandLine.h"
 #include "include/Utils.h"
+#include "llvm/Passes/PassBuilder.h"
+#include "llvm/Passes/PassPlugin.h"
+#include "llvm/Support/CommandLine.h"
 
 using namespace llvm;
 
@@ -232,3 +234,25 @@ INITIALIZE_PASS_DEPENDENCY(SplitBasicBlock);
 INITIALIZE_PASS_DEPENDENCY(StringEncryption);
 INITIALIZE_PASS_DEPENDENCY(Substitution);
 INITIALIZE_PASS_END(Obfuscation, "obfus", "Enable Obfuscation", false, false)
+
+#if LLVM_VERSION_MAJOR >= 18
+
+namespace llvm {
+
+PassPluginLibraryInfo getHikariPluginInfo() {
+  return {LLVM_PLUGIN_API_VERSION, "Hikari", LLVM_VERSION_STRING,
+          [](PassBuilder &PB) {
+            PB.registerPipelineStartEPCallback(
+                [](ModulePassManager &PM, OptimizationLevel) {
+                  PM.addPass(ObfuscationPass());
+                });
+          }};
+}
+
+extern "C" LLVM_ATTRIBUTE_WEAK PassPluginLibraryInfo llvmGetPassPluginInfo() {
+  return getHikariPluginInfo();
+}
+
+} // namespace llvm
+
+#endif
