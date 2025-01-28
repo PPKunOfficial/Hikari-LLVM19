@@ -6,6 +6,21 @@
 
 混淆插件提取自 [Hikari-LLVM15](https://github.com/61bcdefg/Hikari-LLVM15) By 61bcdefg 项目。
 
+## 编译
+
+### 环境
+Macos 15.2
+LLVM 19.1.7
+
+```bash
+cmake -G "Ninja" -S . -B ./build \
+      -DCMAKE_CXX_STANDARD=17 \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DBUILD_SHARED_LIBS=ON \
+      -DLT_LLVM_INSTALL_DIR=/opt/homebrew/opt/llvm@19
+```
+**注意要将 LT_LLVM_INSTALL_DIR 换为自己，CMake里硬编码了，也要替换**
+
 ## rust 动态加载
 
 动态加载 llvm pass 插件需切换到 nightly 通道
