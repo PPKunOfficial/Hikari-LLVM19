@@ -56,4 +56,4 @@ clang output.o -o output
 ## 感谢
 [Hikari-LLVM15](https://github.com/61bcdefg/Hikari-LLVM15) By 61bcdefg
 
-[ollvm-rust](https://github.com/0xlane/ollvm-rust) By REinject
+[ollvm-rust](https://github.com/0xlane/ollvm-rust) By 0xlane
