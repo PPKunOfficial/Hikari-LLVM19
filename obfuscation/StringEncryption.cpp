@@ -2,15 +2,15 @@
 // [License](https://github.com/HikariObfuscator/Hikari/wiki/License).
 //===----------------------------------------------------------------------===//
 #include "include/StringEncryption.h"
+#include "include/CryptoUtils.h"
+#include "include/Utils.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/InstIterator.h"
 #include "llvm/IR/Module.h"
 #include "llvm/Support/CommandLine.h"
-#include "include/CryptoUtils.h"
 #include "llvm/Transforms/Utils/BasicBlockUtils.h"
 #include "llvm/Transforms/Utils/ModuleUtils.h"
-#include "include/Utils.h"
 #include <unordered_set>
 
 using namespace llvm;
@@ -36,6 +36,10 @@ struct StringEncryption : public ModulePass {
   std::unordered_map<Constant *, SmallVector<unsigned int, 16>>
       unencryptedindex;
   SmallVector<GlobalVariable *, 32> genedgv;
+  std::unordered_map<GlobalVariable *,
+                     std::pair<GlobalVariable *, GlobalVariable *>>
+      globalOld2New;
+  std::unordered_set<GlobalVariable *> globalProcessedGVs;
   StringEncryption() : ModulePass(ID) { this->flag = true; }
 
   StringEncryption(bool flag) : ModulePass(ID) { this->flag = flag; }
@@ -92,6 +96,14 @@ struct StringEncryption : public ModulePass {
         encstatus[&F] = GV;
         HandleFunction(&F);
       }
+    for (GlobalVariable *GV : globalProcessedGVs) {
+      GV->removeDeadConstantUsers();
+      if (GV->getNumUses() == 0) {
+        GV->dropAllReferences();
+        GV->eraseFromParent();
+      }
+    }
+
     return true;
   }
 
@@ -236,6 +248,14 @@ struct StringEncryption : public ModulePass {
       if (GV->getInitializer()->isZeroValue() ||
           GV->getInitializer()->isNullValue())
         continue;
+      auto globalIt = globalOld2New.find(GV);
+      if (globalIt != globalOld2New.end()) {
+        old2new[GV] = globalIt->second;
+        // 更新当前函数的GV2Keys和mgv2keys
+        GV2Keys[globalIt->second.second] = mgv2keys[globalIt->second.second];
+        mgv2keys[globalIt->second.second] = GV2Keys[globalIt->second.second];
+        continue; // 跳过生成新变量步骤
+      }
       ConstantDataSequential *CDS =
           dyn_cast<ConstantDataSequential>(GV->getInitializer());
       bool rust_string = !CDS;
@@ -362,6 +382,9 @@ struct StringEncryption : public ModulePass {
       GV2Keys[DecryptSpaceGV] = std::make_pair(KeyConst, EncryptedRawGV);
       mgv2keys[DecryptSpaceGV] = GV2Keys[DecryptSpaceGV];
       unencryptedindex[KeyConst] = unencryptedindex[GV];
+      globalOld2New[GV] = std::make_pair(EncryptedRawGV, DecryptSpaceGV);
+      globalProcessedGVs.insert(GV);
+      old2new[GV] = globalOld2New[GV];
     }
     // Now prepare ObjC new GV
     for (GlobalVariable *GV : objCStrings) {
@@ -456,11 +479,11 @@ struct StringEncryption : public ModulePass {
              old2new.begin();
          iter != old2new.end(); ++iter) {
       GlobalVariable *toDelete = iter->first;
-      toDelete->removeDeadConstantUsers();
-      if (toDelete->getNumUses() == 0) {
-        toDelete->dropAllReferences();
-        toDelete->eraseFromParent();
-      }
+      // toDelete->removeDeadConstantUsers();
+      // if (toDelete->getNumUses() == 0) {
+      //   toDelete->dropAllReferences();
+      //   toDelete->eraseFromParent();
+      // }
     }
     GlobalVariable *StatusGV = encstatus[Func];
     /*
