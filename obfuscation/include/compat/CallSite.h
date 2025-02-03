@@ -566,7 +566,7 @@ public:
   Optional<OperandBundleUse> getOperandBundle(uint32_t ID) const {
     CALLSITE_DELEGATE_GETTER(getOperandBundle(ID));
   }
-  #endif
+#endif
 
   unsigned countOperandBundlesOfType(uint32_t ID) const {
     CALLSITE_DELEGATE_GETTER(countOperandBundlesOfType(ID));

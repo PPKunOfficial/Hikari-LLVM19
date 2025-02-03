@@ -9,6 +9,8 @@
 #else
 #include "llvm/ADT/Triple.h"
 #endif
+#include "include/Utils.h"
+#include "include/compat/CallSite.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/InstIterator.h"
@@ -18,8 +20,6 @@
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/Path.h"
 #include "llvm/Support/raw_ostream.h"
-#include "include/Utils.h"
-#include "include/compat/CallSite.h"
 #include <fstream>
 
 using namespace llvm;
@@ -238,8 +238,7 @@ struct FunctionCallObfuscate : public FunctionPass {
       }
       std::vector<Constant *> elements = {};
       for (unsigned int i = 0; i < CompilerUsed->getNumOperands(); i++) {
-        Constant *Op =
-            CompilerUsed->getAggregateElement(i);
+        Constant *Op = CompilerUsed->getAggregateElement(i);
         if (!Op->isNullValue())
           elements.emplace_back(Op);
       }
@@ -247,8 +246,7 @@ struct FunctionCallObfuscate : public FunctionPass {
         ConstantArray *NewCA = cast<ConstantArray>(
             ConstantArray::get(CompilerUsed->getType(), elements));
         CompilerUsedGV->setInitializer(NewCA);
-      }
-      else {
+      } else {
         CompilerUsedGV->dropAllReferences();
         CompilerUsedGV->eraseFromParent();
       }

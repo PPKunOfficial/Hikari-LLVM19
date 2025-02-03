@@ -2,13 +2,13 @@
 // [License](https://github.com/HikariObfuscator/Hikari/wiki/License).
 //===----------------------------------------------------------------------===//
 #include "include/Substitution.h"
+#include "include/CryptoUtils.h"
+#include "include/SubstituteImpl.h"
+#include "include/Utils.h"
 #include "llvm/ADT/Statistic.h"
 #include "llvm/IR/InstIterator.h"
 #include "llvm/IR/Intrinsics.h"
 #include "llvm/Support/CommandLine.h"
-#include "include/CryptoUtils.h"
-#include "include/SubstituteImpl.h"
-#include "include/Utils.h"
 
 using namespace llvm;
 

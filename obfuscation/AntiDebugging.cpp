@@ -22,6 +22,8 @@
 #else
 #include "llvm/ADT/Triple.h"
 #endif
+#include "include/CryptoUtils.h"
+#include "include/Utils.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/InlineAsm.h"
@@ -32,8 +34,6 @@
 #include "llvm/Support/Path.h"
 #include "llvm/Support/SourceMgr.h"
 #include "llvm/Support/raw_ostream.h"
-#include "include/CryptoUtils.h"
-#include "include/Utils.h"
 #include <fstream>
 
 using namespace llvm;

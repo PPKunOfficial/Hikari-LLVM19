@@ -247,50 +247,52 @@ INITIALIZE_PASS_END(Obfuscation, "obfus", "Enable Obfuscation", false, false)
 namespace llvm {
 
 PassPluginLibraryInfo getHikariPluginInfo() {
-  return {LLVM_PLUGIN_API_VERSION, "Hikari", LLVM_VERSION_STRING,
-          [](PassBuilder &PB) {
-            PB.registerPipelineParsingCallback(
-                [](StringRef Name, ModulePassManager &FPM,
-                   ArrayRef<PassBuilder::PipelineElement> InnerPipeline) {
-                  if (Name == EnableIRObfusaction.ArgStr) {
-                    EnableIRObfusaction = true;
-                    for (const auto &Element : InnerPipeline) {
-                      if (Element.Name == EnableAntiClassDump.ArgStr) {
-                        EnableAntiClassDump = true;
-                      } else if (Element.Name == EnableAntiHooking.ArgStr) {
-                        EnableAntiHooking = true;
-                      } else if (Element.Name == EnableAntiDebugging.ArgStr) {
-                        EnableAntiDebugging = true;
-                      } else if (Element.Name == EnableBogusControlFlow.ArgStr) {
-                        EnableBogusControlFlow = true;
-                      } else if (Element.Name == EnableFlattening.ArgStr) {
-                        EnableFlattening = true;
-                      } else if (Element.Name == EnableBasicBlockSplit.ArgStr) {
-                        EnableBasicBlockSplit = true;
-                      } else if (Element.Name == EnableSubstitution.ArgStr) {
-                        EnableSubstitution = true;
-                      } else if (Element.Name == EnableAllObfuscation.ArgStr) {
-                        EnableAllObfuscation = true;
-                      } else if (Element.Name == EnableFunctionCallObfuscate.ArgStr) {
-                        EnableFunctionCallObfuscate = true;
-                      } else if (Element.Name == EnableStringEncryption.ArgStr) {
-                        EnableStringEncryption = true;
-                      } else if (Element.Name == EnableConstantEncryption.ArgStr) {
-                        EnableConstantEncryption = true;
-                      } else if (Element.Name == EnableIndirectBranching.ArgStr) {
-                        EnableIndirectBranching = true;
-                      } else if (Element.Name == EnableFunctionWrapper.ArgStr) {
-                        EnableFunctionWrapper = true;
-                      }
-                    }
-
-                    FPM.addPass(ObfuscationPass());
-                    return true;
-                  } else {
-                    return false;
+  return {
+      LLVM_PLUGIN_API_VERSION, "Hikari", LLVM_VERSION_STRING,
+      [](PassBuilder &PB) {
+        PB.registerPipelineParsingCallback(
+            [](StringRef Name, ModulePassManager &FPM,
+               ArrayRef<PassBuilder::PipelineElement> InnerPipeline) {
+              if (Name == EnableIRObfusaction.ArgStr) {
+                EnableIRObfusaction = true;
+                for (const auto &Element : InnerPipeline) {
+                  if (Element.Name == EnableAntiClassDump.ArgStr) {
+                    EnableAntiClassDump = true;
+                  } else if (Element.Name == EnableAntiHooking.ArgStr) {
+                    EnableAntiHooking = true;
+                  } else if (Element.Name == EnableAntiDebugging.ArgStr) {
+                    EnableAntiDebugging = true;
+                  } else if (Element.Name == EnableBogusControlFlow.ArgStr) {
+                    EnableBogusControlFlow = true;
+                  } else if (Element.Name == EnableFlattening.ArgStr) {
+                    EnableFlattening = true;
+                  } else if (Element.Name == EnableBasicBlockSplit.ArgStr) {
+                    EnableBasicBlockSplit = true;
+                  } else if (Element.Name == EnableSubstitution.ArgStr) {
+                    EnableSubstitution = true;
+                  } else if (Element.Name == EnableAllObfuscation.ArgStr) {
+                    EnableAllObfuscation = true;
+                  } else if (Element.Name ==
+                             EnableFunctionCallObfuscate.ArgStr) {
+                    EnableFunctionCallObfuscate = true;
+                  } else if (Element.Name == EnableStringEncryption.ArgStr) {
+                    EnableStringEncryption = true;
+                  } else if (Element.Name == EnableConstantEncryption.ArgStr) {
+                    EnableConstantEncryption = true;
+                  } else if (Element.Name == EnableIndirectBranching.ArgStr) {
+                    EnableIndirectBranching = true;
+                  } else if (Element.Name == EnableFunctionWrapper.ArgStr) {
+                    EnableFunctionWrapper = true;
                   }
-                });
-          }};
+                }
+
+                FPM.addPass(ObfuscationPass());
+                return true;
+              } else {
+                return false;
+              }
+            });
+      }};
 }
 
 extern "C" LLVM_ATTRIBUTE_WEAK PassPluginLibraryInfo llvmGetPassPluginInfo() {

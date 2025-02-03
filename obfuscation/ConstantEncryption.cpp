@@ -16,6 +16,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "include/ConstantEncryption.h"
+#include "include/CryptoUtils.h"
+#include "include/SubstituteImpl.h"
+#include "include/Utils.h"
+#include "include/compat/CallSite.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/InstIterator.h"
@@ -23,10 +27,6 @@
 #include "llvm/IR/IntrinsicInst.h"
 #include "llvm/IR/Module.h"
 #include "llvm/IR/NoFolder.h"
-#include "include/CryptoUtils.h"
-#include "include/SubstituteImpl.h"
-#include "include/Utils.h"
-#include "include/compat/CallSite.h"
 #include "llvm/Transforms/Utils/ModuleUtils.h"
 #include <unordered_set>
 

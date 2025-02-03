@@ -92,11 +92,11 @@
 //===----------------------------------------------------------------------------------===//
 
 #include "include/BogusControlFlow.h"
+#include "include/CryptoUtils.h"
+#include "include/Utils.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/InlineAsm.h"
 #include "llvm/IR/IntrinsicInst.h"
-#include "include/CryptoUtils.h"
-#include "include/Utils.h"
 #include "llvm/Transforms/Utils/Cloning.h"
 #include "llvm/Transforms/Utils/Local.h"
 #include "llvm/Transforms/Utils/ValueMapper.h"

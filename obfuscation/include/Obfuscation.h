@@ -1,7 +1,6 @@
 #ifndef _OBFUSCATION_H_
 #define _OBFUSCATION_H_
 
-#include "llvm/Support/Timer.h"
 #include "include/AntiClassDump.h"
 #include "include/AntiDebugging.h"
 #include "include/AntiHook.h"
@@ -15,6 +14,7 @@
 #include "include/Split.h"
 #include "include/StringEncryption.h"
 #include "include/Substitution.h"
+#include "llvm/Support/Timer.h"
 #include "llvm/Transforms/Utils/BasicBlockUtils.h"
 #include "llvm/Transforms/Utils/ModuleUtils.h"
 

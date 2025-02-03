@@ -1,9 +1,9 @@
 //===----------------------------------------------------------------------===//
 
 #include "include/SubstituteImpl.h"
+#include "include/CryptoUtils.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/NoFolder.h"
-#include "include/CryptoUtils.h"
 
 using namespace llvm;
 

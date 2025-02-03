@@ -2,11 +2,11 @@
 // [License](https://github.com/HikariObfuscator/Hikari/wiki/License).
 //===----------------------------------------------------------------------===//
 #include "include/Flattening.h"
+#include "include/CryptoUtils.h"
+#include "include/Utils.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/Passes/PassBuilder.h"
-#include "include/CryptoUtils.h"
-#include "include/Utils.h"
 #include "llvm/Transforms/Utils/LowerSwitch.h"
 
 using namespace llvm;

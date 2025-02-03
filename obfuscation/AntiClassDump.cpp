@@ -18,6 +18,7 @@
 #else
 #include "llvm/ADT/Triple.h"
 #endif
+#include "include/Utils.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/InlineAsm.h"
@@ -26,7 +27,6 @@
 #include "llvm/IR/Value.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/raw_ostream.h"
-#include "include/Utils.h"
 #include "llvm/Transforms/Utils/ModuleUtils.h"
 #include <deque>
 #include <map>
