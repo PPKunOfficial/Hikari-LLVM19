@@ -97,6 +97,7 @@ struct StringEncryption : public ModulePass {
         HandleFunction(&F);
       }
     for (GlobalVariable *GV : globalProcessedGVs) {
+      errs() << "Post-cleaning work: " << GV << "\n";
       GV->removeDeadConstantUsers();
       if (GV->getNumUses() == 0) {
         GV->dropAllReferences();
@@ -250,6 +251,7 @@ struct StringEncryption : public ModulePass {
         continue;
       auto globalIt = globalOld2New.find(GV);
       if (globalIt != globalOld2New.end()) {
+        errs() << "Found shared global variable: " << GV << "\n";
         old2new[GV] = globalIt->second;
         // 更新当前函数的GV2Keys和mgv2keys
         GV2Keys[globalIt->second.second] = mgv2keys[globalIt->second.second];
