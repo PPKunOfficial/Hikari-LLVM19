@@ -1,6 +1,11 @@
 # Hikari-LLVM19
 
-**enable-strcry在rust中可能存在问题，其他自行测试**
+~~**enable-strcry在rust中可能存在问题，其他自行测试**~~
+
+经过修复，strcry**可能**可以使用
+
+编译后运行出现错误请设置opt level为0
+
 
 > Warning: 仅在mac arm64上编译通过，未经过完全测试
 
