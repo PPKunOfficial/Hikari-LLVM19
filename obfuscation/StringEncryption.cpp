@@ -474,19 +474,20 @@ struct StringEncryption : public ModulePass {
         }
       }
     }
+    // Cleanup at the end of encryption to avoid wild pointers
     // CleanUp Old Raw GVs
-    for (std::unordered_map<
-             GlobalVariable *,
-             std::pair<GlobalVariable *, GlobalVariable *>>::iterator iter =
-             old2new.begin();
-         iter != old2new.end(); ++iter) {
-      GlobalVariable *toDelete = iter->first;
-      // toDelete->removeDeadConstantUsers();
-      // if (toDelete->getNumUses() == 0) {
-      //   toDelete->dropAllReferences();
-      //   toDelete->eraseFromParent();
-      // }
-    }
+    // for (std::unordered_map<
+    //          GlobalVariable *,
+    //          std::pair<GlobalVariable *, GlobalVariable *>>::iterator iter =
+    //          old2new.begin();
+    //      iter != old2new.end(); ++iter) {
+    //   GlobalVariable *toDelete = iter->first;
+    //   toDelete->removeDeadConstantUsers();
+    //   if (toDelete->getNumUses() == 0) {
+    //     toDelete->dropAllReferences();
+    //     toDelete->eraseFromParent();
+    //   }
+    // }
     GlobalVariable *StatusGV = encstatus[Func];
     /*
        - Split Original EntryPoint BB into A and C.
