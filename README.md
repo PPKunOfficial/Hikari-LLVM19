@@ -7,7 +7,7 @@
 编译后运行出现错误请设置opt level为0
 
 
-> Warning: 仅在mac arm64上编译通过，未经过完全测试
+> Warning: 仅在mac arm64上编译通过，仅测试过rust语言下的表现，未经过完全测试
 
 混淆插件提取自 [Hikari-LLVM15](https://github.com/61bcdefg/Hikari-LLVM15) By 61bcdefg 项目。
 
